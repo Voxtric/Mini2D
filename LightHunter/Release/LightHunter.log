@@ -1,0 +1,20 @@
+﻿Build started 14/12/2015 16:11:49.
+     1>Project "E:\Dropbox\Works In Progress\C++ Programs\Mini2D\LightHunter\LightHunter.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\\" /I"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\\deps\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D SFML_STATIC /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\Release\LightHunter.exe" /NOLOGO /LIBPATH:"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\\deps\lib" "E:\Dropbox\Works In Progress\C++ Programs\Mini2D\Release\Mini2D.lib" "sfml-graphics-s.lib" "sfml-window-s.lib" "sfml-audio-s.lib" "sfml-network-s.lib" "sfml-system-s.lib" opengl32.lib openal32.lib freetype.lib jpeg.lib winmm.lib ogg.lib flac.lib vorbis.lib vorbisfile.lib vorbisenc.lib ws2_32.lib gdi32.lib glew32s.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\Release\LightHunter.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Dropbox\Works In Progress\C++ Programs\Mini2D\Release\LightHunter.lib" /MACHINE:X86 /SAFESEH /ignore:4099 Release\EmergencyLight.obj
+         Release\main.obj
+         Release\PlayerController.obj
+         Generating code
+         0 of 2142 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           0 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
+         LightHunter.vcxproj -> E:\Dropbox\Works In Progress\C++ Programs\Mini2D\Release\LightHunter.exe
+     1>Done Building Project "E:\Dropbox\Works In Progress\C++ Programs\Mini2D\LightHunter\LightHunter.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.28

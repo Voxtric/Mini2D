@@ -4,7 +4,7 @@ Light::Light(sf::Vector2f position, sf::Color color, unsigned int size)
 {
   m_position = position;
   m_color = color;
-  m_size = size;
+  m_occluderFBO.create(size, size, false);
 }
 
 sf::RenderTexture* Light::getOccluderFBO()
@@ -24,5 +24,5 @@ sf::Color Light::getColor() const
 
 unsigned int Light::getSize() const
 {
-  return m_size;
+  return m_occluderFBO.getSize().x; //x or y will do.
 }

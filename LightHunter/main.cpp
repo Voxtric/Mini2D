@@ -7,7 +7,7 @@
 int main()
 {
   srand((unsigned int)std::time(NULL));
-  Game* game = new Game(120, 60);
+  Game* game = new Game(120, 60, true);
   game->openWindow("Light Hunter", 1080, 760);
 
   Renderer* renderer = new Renderer("Sprites/ship.png");

@@ -12,7 +12,7 @@
 class Game
 {
 public:
-  Game(unsigned int frameRate, unsigned int tickRate);
+  Game(unsigned int frameRate, unsigned int tickRate, bool useLights);
   ~Game();
 
   void mainLoop();

@@ -10,6 +10,16 @@ void RenderManager::setWindow(const sf::RenderWindow* window)
   m_window = (sf::RenderWindow*)window;
 }
 
+void RenderManager::setUseLights(bool useLights)
+{
+  m_useLights = useLights;
+}
+
+void RenderManager::drawAll()
+{
+  m_useLights ? drawWithLights() : drawWithoutLights();
+}
+
 void RenderManager::drawWithoutLights()
 {
   m_drawCalls = 0;
@@ -30,7 +40,23 @@ void RenderManager::drawWithoutLights()
   }
 }
 
+void RenderManager::drawWithLights()
+{
+  m_drawCalls = 0;
+  m_window->clear(sf::Color(255, 255, 255, 255));
+}
+
 void RenderManager::addRenderer(const Renderer* renderer)
 {
   m_renderers.push_back((Renderer*)renderer);
+}
+
+void RenderManager::addOccluder(const Renderer* occluder)
+{
+  m_occluders.push_back((Renderer*)occluder);
+}
+
+void RenderManager::addLight(const Light* light)
+{
+  m_lights.push_back((Light*)light);
 }

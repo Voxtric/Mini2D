@@ -8,10 +8,11 @@
 
 Game* Game::s_activeGame = nullptr;
 
-Game::Game(unsigned int frameRate, unsigned int tickRate)
+Game::Game(unsigned int frameRate, unsigned int tickRate, bool useLights)
 {
   m_targetFrameRate = frameRate;
   m_targetTickRate = tickRate;
+  m_renderManager.setUseLights(useLights);
 
   m_textManager.addTextToDisplay(&m_ticksInLastSecond, 
     sf::Vector2f(0.0f, 0.0f));
@@ -135,7 +136,7 @@ InputManager& Game::getInputManager()
 
 void Game::drawAll()
 {
-  m_renderManager.drawWithoutLights();
+  m_renderManager.drawAll();
   m_textManager.drawText(m_window);
   m_window->display();
 }

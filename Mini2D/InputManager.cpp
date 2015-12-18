@@ -45,7 +45,6 @@ void InputManager::pollEvents(sf::RenderWindow* window)
         sf::View view(sf::FloatRect(0.0f, 0.0f, (float)size.x, (float)size.y));
         Game::getActiveGame().getWindow()->setView(view);
       }
-      Game::getActiveGame().getRenderManager().refreshLightComponents();
       break;
     case sf::Event::TextEntered:
     case::sf::Event::MouseLeft:

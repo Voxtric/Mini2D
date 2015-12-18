@@ -135,9 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EmergencyLight.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf">
@@ -155,10 +153,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="EmergencyLight.h" />
-    <ClInclude Include="PlayerController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

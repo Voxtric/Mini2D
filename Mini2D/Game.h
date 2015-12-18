@@ -12,7 +12,7 @@
 class Game
 {
 public:
-  Game(unsigned int frameRate, unsigned int tickRate, bool useLighting);
+  Game(unsigned int frameRate, unsigned int tickRate);
   ~Game();
 
   void mainLoop();
@@ -31,7 +31,6 @@ public:
   static Game& getActiveGame();
 
 private:
-  bool m_useLighting = false;
   unsigned int m_targetTickRate = 0;
   unsigned int m_targetFrameRate = 0;
   std::string m_ticksInLastSecond = "0";

@@ -8,9 +8,8 @@
 
 Game* Game::s_activeGame = nullptr;
 
-Game::Game(unsigned int frameRate, unsigned int tickRate, bool useLighting)
+Game::Game(unsigned int frameRate, unsigned int tickRate)
 {
-  m_useLighting = useLighting;
   m_targetFrameRate = frameRate;
   m_targetTickRate = tickRate;
 
@@ -121,7 +120,7 @@ void Game::openWindow(const std::string& windowTitle, unsigned int pixelWidth,
   m_window->setKeyRepeatEnabled(false);
   std::cout << "Opening new window \"" << windowTitle << 
     "\" with dimensions of " << pixelWidth << " by " << pixelHeight << ".\n";
-  m_renderManager.setWindow(m_window, true);
+  m_renderManager.setWindow(m_window);
 }
 
 sf::RenderWindow* Game::getWindow() const
@@ -136,14 +135,7 @@ InputManager& Game::getInputManager()
 
 void Game::drawAll()
 {
-  if (m_useLighting)
-  {
-    m_renderManager.drawWithLights();
-  }
-  else
-  {
-    m_renderManager.drawWithoutLights();
-  }
+  m_renderManager.drawWithoutLights();
   m_textManager.drawText(m_window);
   m_window->display();
 }
@@ -162,11 +154,6 @@ void Game::tickAll()
     {
       m_tickers[i]->tick();
     }
-  }
-
-  if (m_useLighting)
-  {
-    m_renderManager.refreshLightMap();
   }
 }
 

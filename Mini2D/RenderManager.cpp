@@ -70,6 +70,7 @@ void RenderManager::drawWithLights()
 
     m_window->clear(sf::Color(200, 200, 200, 255));
     sf::Sprite occluderMap = sf::Sprite(occluderFBO->getTexture());
+    occluderMap.setScale(1.0f, -1.0f);
     occluderMap.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
     occluderMap.setPosition(m_lights[i]->getPosition());
     m_window->draw(occluderMap);

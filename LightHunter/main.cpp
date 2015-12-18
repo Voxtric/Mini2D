@@ -10,7 +10,7 @@ int main()
   Game* game = new Game(120, 60);
   game->openWindow("Light Hunter", 1080, 760);
 
-  Renderer* renderer = new Renderer("Sprites/Arenas/test.png");
+  Renderer* renderer = new Renderer("Sprites/ship.png");
   RENDER.addRenderer(renderer);
 
   game->mainLoop();

@@ -1,6 +1,7 @@
 #include "RenderManager.h"
 
 #include <sstream>
+#include <iostream>
 
 #include "Renderer.h"
 
@@ -12,7 +13,7 @@ void RenderManager::setWindow(const sf::RenderWindow* window)
 void RenderManager::drawWithoutLights()
 {
   m_drawCalls = 0;
-  m_window->clear();
+  m_window->clear(sf::Color(255, 255, 255, 255));
 
   for (unsigned int i = 0; i < m_renderers.size(); ++i)
   {

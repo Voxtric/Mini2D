@@ -11,6 +11,8 @@ class Renderer;
 class RenderManager
 {
 public:
+  RenderManager();
+
   void setWindow(const sf::RenderWindow* window);
   void setUseLights(bool useLights);
   void drawAll();
@@ -27,6 +29,7 @@ private:
   std::vector<Light*> m_lights;
 
   sf::RenderWindow* m_window = nullptr;
+  sf::Shader m_vertexYAxisFlip;
 
   void drawWithoutLights();
   void drawWithLights();

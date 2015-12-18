@@ -1,9 +1,12 @@
 #include "RenderManager.h"
 
-#include <sstream>
-#include <iostream>
-
 #include "Renderer.h"
+
+RenderManager::RenderManager()
+{
+  m_vertexYAxisFlip.loadFromFile("shaders/vertex_y_axis_flip.vert",
+    sf::Shader::Vertex);
+}
 
 void RenderManager::setWindow(const sf::RenderWindow* window)
 {
@@ -63,14 +66,13 @@ void RenderManager::drawWithLights()
       }
       else if (m_occluders[i]->canRender(occluderFBO))
       {
-        m_occluders[i]->render(occluderFBO);
+        m_occluders[i]->render(occluderFBO, &m_vertexYAxisFlip);
         ++m_drawCalls;
       }
     }
 
     m_window->clear(sf::Color(200, 200, 200, 255));
     sf::Sprite occluderMap = sf::Sprite(occluderFBO->getTexture());
-    occluderMap.setScale(1.0f, -1.0f);
     occluderMap.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
     occluderMap.setPosition(m_lights[i]->getPosition());
     m_window->draw(occluderMap);

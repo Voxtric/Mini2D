@@ -10,7 +10,7 @@ int main()
   Game* game = new Game(120, 60, true);
   game->openWindow("Light Hunter", 1080, 760);
 
-  Renderer* renderer = new Renderer("Sprites/ship.png");
+  Renderer* renderer = new Renderer("sprites/ship.png");
   RENDER.addRenderer(renderer);
   RENDER.addOccluder(renderer);
   Light* light = new Light(sf::Vector2f(200.0f, 200.0f), sf::Color::White, 256);

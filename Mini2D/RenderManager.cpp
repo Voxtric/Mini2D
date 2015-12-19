@@ -6,7 +6,9 @@ RenderManager::RenderManager()
 {
   m_vertexYAxisFlip.loadFromFile("shaders/vertex_y_axis_flip.vert",
     sf::Shader::Vertex);
-  m_shadowMapGen.loadFromFile("shaders/shadow_map_gen.frag",
+  m_shadowMapGenerate.loadFromFile("shaders/shadow_map_generate.frag",
+    sf::Shader::Fragment);
+  m_shadowMapRender.loadFromFile("shaders/shadow_map_render.frag",
     sf::Shader::Fragment);
 }
 
@@ -76,9 +78,9 @@ void RenderManager::drawWithLights()
     sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
     shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
     float size = (float)m_lights[i]->getSize();
-    m_shadowMapGen.setParameter("resolution", sf::Vector2f(size, size));
+    m_shadowMapGenerate.setParameter("resolution", sf::Vector2f(size, size));
     sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
-    shadowMapFBO->draw(occludersTex, &m_shadowMapGen);
+    shadowMapFBO->draw(occludersTex, &m_shadowMapGenerate);
 
     //Render the shadow map frame buffer
     /*

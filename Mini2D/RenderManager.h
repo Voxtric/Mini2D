@@ -30,7 +30,8 @@ private:
 
   sf::RenderWindow* m_window = nullptr;
   sf::Shader m_vertexYAxisFlip;
-  sf::Shader m_shadowMapGen;
+  sf::Shader m_shadowMapGenerate;
+  sf::Shader m_shadowMapRender;
 
   void drawWithoutLights();
   void drawWithLights();

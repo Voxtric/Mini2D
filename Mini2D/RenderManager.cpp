@@ -25,7 +25,7 @@ void RenderManager::setUseLights(bool useLights)
 void RenderManager::drawAll()
 {
   m_drawCalls = 0;
-  m_window->clear(sf::Color(200, 200, 200, 255));
+  m_window->clear(sf::Color(0, 0, 0, 255));
   m_useLights ? drawWithLights() : drawWithoutLights();
 }
 
@@ -51,6 +51,7 @@ void RenderManager::drawWithLights()
 {  
   for (unsigned int i = 0; i < m_lights.size(); ++i)
   {
+    //State one
     sf::RenderTexture* occludersFBO = m_lights[i]->getOccluderFBO();
     occludersFBO->clear(sf::Color(0, 0, 0, 0));
     sf::View view = occludersFBO->getView();
@@ -72,23 +73,32 @@ void RenderManager::drawWithLights()
       }
     }
 
+    //Stage two
     sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
     shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
-    float size = (float)m_lights[i]->getSize();
+    float size = (float)m_lights[i]->getSize(); //Used in stage three too.
     m_shadowMapGenerate.setParameter("resolution", sf::Vector2f(size, size));
     sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
     shadowMapFBO->draw(occludersTex, &m_shadowMapGenerate);
 
+    //Stage three
+    m_shadowMapRender.setParameter("resolution", sf::Vector2f(size, size));
+    sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
+    float finalSize = size * m_lights[i]->getScale();
+    float x = m_lights[i]->getPosition().x - (finalSize / 2.0f);
+    float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + size;
+    shadowMapTex.setPosition(x, y);
+    shadowMapTex.setScale(m_lights[i]->getScale(), -finalSize);
+    m_window->draw(shadowMapTex, &m_shadowMapRender);
+
     //Render the shadow map frame buffer
     /*
-    m_window->clear(sf::Color(200, 200, 200, 255));
     sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
     m_window->draw(shadowMapTex);
     */
 
     //Render the occluders frame buffer
     /*
-    m_window->clear(sf::Color(200, 200, 200, 255));
     sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
     occludersTex.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
     occludersTex.setPosition(m_lights[i]->getPosition());
@@ -96,6 +106,7 @@ void RenderManager::drawWithLights()
     ++m_drawCalls;
     */
   }
+  drawWithoutLights();
 }
 
 void RenderManager::addRenderer(const Renderer* renderer)

@@ -12,7 +12,8 @@ int main()
 
   Renderer* renderer = new Renderer("sprites/ship.png");
   RENDER.addOccluder(renderer);
-  Light* light = new Light(sf::Vector2f(200.0f, 200.0f), sf::Color::White, 256);
+  RENDER.addRenderer(renderer);
+  Light* light = new Light(sf::Vector2f(200.0f, 200.0f), sf::Color::White, 1.0f, 256);
   RENDER.addLight(light);
 
   game->mainLoop();

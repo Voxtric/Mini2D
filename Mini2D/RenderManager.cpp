@@ -89,22 +89,8 @@ void RenderManager::drawWithLights()
     float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + size;
     shadowMapTex.setPosition(x, y);
     shadowMapTex.setScale(m_lights[i]->getScale(), -finalSize);
+    shadowMapTex.setColor(m_lights[i]->getColor());
     m_window->draw(shadowMapTex, &m_shadowMapRender);
-
-    //Render the shadow map frame buffer
-    /*
-    sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
-    m_window->draw(shadowMapTex);
-    */
-
-    //Render the occluders frame buffer
-    /*
-    sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
-    occludersTex.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
-    occludersTex.setPosition(m_lights[i]->getPosition());
-    m_window->draw(occluderMap);
-    ++m_drawCalls;
-    */
   }
   drawWithoutLights();
 }

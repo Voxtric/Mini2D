@@ -20,6 +20,26 @@ sf::RenderTexture* Light::getShadowMapFBO()
   return &m_shadowMapFBO;
 }
 
+unsigned int Light::getSize() const
+{
+  return m_occluderFBO.getSize().x; //x or y will do.
+}
+
+void Light::setPosition(sf::Vector2f position)
+{
+  m_position = position;
+}
+
+void Light::setColor(sf::Color color)
+{
+  m_color = color;
+}
+
+void Light::setScale(float scale)
+{
+  m_scale = scale;
+}
+
 sf::Vector2f Light::getPosition() const
 {
   return m_position;
@@ -33,9 +53,4 @@ sf::Color Light::getColor() const
 float Light::getScale() const
 {
   return m_scale;
-}
-
-unsigned int Light::getSize() const
-{
-  return m_occluderFBO.getSize().x; //x or y will do.
 }

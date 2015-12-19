@@ -27,7 +27,7 @@ private:
   void newLight()
   {
     sf::Color color = sf::Color(rand() % 256, rand() % 256, rand() % 256, 255);
-    m_light = new Light(sf::Vector2f(200.0f, 200.0f), color, 2.0f, 256);
+    m_light = new Light(sf::Vector2f(200.0f, 200.0f), color, 1.0f, 512);
     RENDER.addLight(m_light);
   }
 };

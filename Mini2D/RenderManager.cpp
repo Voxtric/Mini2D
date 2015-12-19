@@ -10,6 +10,7 @@ RenderManager::RenderManager()
     sf::Shader::Fragment);
   m_shadowMapRender.loadFromFile("shaders/shadow_map_render.frag",
     sf::Shader::Fragment);
+  m_blackOut.loadFromFile("shaders/black_out.frag", sf::Shader::Fragment);
 }
 
 void RenderManager::setWindow(const sf::RenderWindow* window)
@@ -26,10 +27,16 @@ void RenderManager::drawAll()
 {
   m_drawCalls = 0;
   m_window->clear(sf::Color(0, 0, 0, 255));
-  m_useLights ? drawWithLights() : drawWithoutLights();
+
+  //drawRenderers(m_window);
+  if (m_useLights)
+  {
+    drawLights(m_window);
+    drawOccluders(m_window, &m_blackOut);
+  }
 }
 
-void RenderManager::drawWithoutLights()
+void RenderManager::drawRenderers(sf::RenderTarget* target)
 {
   for (unsigned int i = 0; i < m_renderers.size(); ++i)
   {
@@ -39,15 +46,33 @@ void RenderManager::drawWithoutLights()
       m_renderers.pop_back();
       --i;
     }
-    else if (m_renderers[i]->canRender(m_window))
+    else if (m_renderers[i]->canRender(target))
     {
-      m_renderers[i]->render(m_window);
+      m_renderers[i]->render(target);
       ++m_drawCalls;
     }
   }
 }
 
-void RenderManager::drawWithLights()
+void RenderManager::drawOccluders(sf::RenderTarget* target, sf::Shader* shader)
+{
+  for (unsigned int i = 0; i < m_occluders.size(); ++i)
+  {
+    if (m_occluders[i]->isDestroyed())
+    {
+      m_occluders[i] = m_occluders.back();
+      m_occluders.pop_back();
+      --i;
+    }
+    else if (m_occluders[i]->canRender(target))
+    {
+      m_occluders[i]->render(target, shader);
+      ++m_drawCalls;
+    }
+  }
+}
+
+void RenderManager::drawLights(sf::RenderTarget* target)
 {  
   for (unsigned int i = 0; i < m_lights.size(); ++i)
   {
@@ -57,21 +82,7 @@ void RenderManager::drawWithLights()
     sf::View view = occludersFBO->getView();
     view.setCenter(m_lights[i]->getPosition());
     occludersFBO->setView(view);
-
-    for (unsigned int j = 0; j < m_occluders.size(); ++j)
-    {
-      if (m_occluders[j]->isDestroyed())
-      {
-        m_occluders[j] = m_occluders.back();
-        m_occluders.pop_back();
-        --j;
-      }
-      else if (m_occluders[j]->canRender(occludersFBO))
-      {
-        m_occluders[j]->render(occludersFBO, &m_vertexYAxisFlip);
-        ++m_drawCalls;
-      }
-    }
+    drawOccluders(occludersFBO, &m_vertexYAxisFlip);
 
     //Stage two
     sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
@@ -98,7 +109,6 @@ void RenderManager::drawWithLights()
     states.blendMode = sf::BlendAdd;
     m_window->draw(shadowMapTex, states);
   }
-  drawWithoutLights();
 }
 
 void RenderManager::addRenderer(const Renderer* renderer)

@@ -32,7 +32,9 @@ private:
   sf::Shader m_vertexYAxisFlip;
   sf::Shader m_shadowMapGenerate;
   sf::Shader m_shadowMapRender;
+  sf::Shader m_blackOut;
 
-  void drawWithoutLights();
-  void drawWithLights();
+  void drawRenderers(sf::RenderTarget* target);
+  void drawOccluders(sf::RenderTarget* target, sf::Shader* shader);
+  void drawLights(sf::RenderTarget* target);
 };

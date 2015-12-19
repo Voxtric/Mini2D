@@ -9,17 +9,27 @@ class Test : public Ticker
 public:
   Test()
   {
-    m_light = new Light(sf::Vector2f(200.0f, 200.0f), sf::Color::Red, 1.0f, 256);
-    RENDER.addLight(m_light);
+    newLight();
   }
 
   void tick()
   {
     m_light->setPosition(INPUT.getMouseWorldPosition());
+    if (INPUT.getMousePressed(sf::Mouse::Left))
+    {
+      newLight();
+    }
   }
 
 private:
   Light* m_light;
+
+  void newLight()
+  {
+    sf::Color color = sf::Color(rand() % 256, rand() % 256, rand() % 256, 255);
+    m_light = new Light(sf::Vector2f(200.0f, 200.0f), color, 2.0f, 256);
+    RENDER.addLight(m_light);
+  }
 };
 
 int main()

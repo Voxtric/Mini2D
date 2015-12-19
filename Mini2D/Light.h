@@ -5,11 +5,12 @@
 class Light
 {
 public:
-  Light(sf::Vector2f position, sf::Color color, float scale, unsigned int size);
+  Light(sf::Vector2f position, sf::Color color, float scale,
+    unsigned int resolution);
 
   sf::RenderTexture* getOccluderFBO();
   sf::RenderTexture* getShadowMapFBO();
-  unsigned int getSize() const;
+  unsigned int getResolution() const;
 
   void setPosition(sf::Vector2f position);
   void setColor(sf::Color color);
@@ -22,7 +23,6 @@ public:
 private:
   sf::RenderTexture m_occluderFBO;
   sf::RenderTexture m_shadowMapFBO;
-  unsigned int m_size;
 
   sf::Vector2f m_position;
   sf::Color m_color;

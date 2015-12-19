@@ -60,15 +60,15 @@ void RenderManager::drawWithLights()
 
     for (unsigned int j = 0; j < m_occluders.size(); ++j)
     {
-      if (m_occluders[i]->isDestroyed())
+      if (m_occluders[j]->isDestroyed())
       {
-        m_occluders[i] = m_occluders.back();
+        m_occluders[j] = m_occluders.back();
         m_occluders.pop_back();
-        --i;
+        --j;
       }
-      else if (m_occluders[i]->canRender(occludersFBO))
+      else if (m_occluders[j]->canRender(occludersFBO))
       {
-        m_occluders[i]->render(occludersFBO, &m_vertexYAxisFlip);
+        m_occluders[j]->render(occludersFBO, &m_vertexYAxisFlip);
         ++m_drawCalls;
       }
     }
@@ -76,20 +76,23 @@ void RenderManager::drawWithLights()
     //Stage two
     sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
     shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
-    float size = (float)m_lights[i]->getSize(); //Used in stage three too.
+    float size = (float)m_lights[i]->getResolution(); //Used in stage three too.
     m_shadowMapGenerate.setParameter("resolution", sf::Vector2f(size, size));
+    float scale = m_lights[i]->getScale();
+    m_shadowMapGenerate.setParameter("scale", scale);
     sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
     shadowMapFBO->draw(occludersTex, &m_shadowMapGenerate);
 
     //Stage three
     m_shadowMapRender.setParameter("resolution", sf::Vector2f(size, size));
     sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
-    float finalSize = size * m_lights[i]->getScale();
+    float finalSize = size * scale;
     float x = m_lights[i]->getPosition().x - (finalSize / 2.0f);
-    float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + size;
+    float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + finalSize;
     shadowMapTex.setPosition(x, y);
-    shadowMapTex.setScale(m_lights[i]->getScale(), -finalSize);
+    shadowMapTex.setScale(scale, -finalSize);
     shadowMapTex.setColor(m_lights[i]->getColor());
+
     m_window->draw(shadowMapTex, &m_shadowMapRender);
   }
   drawWithoutLights();

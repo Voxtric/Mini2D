@@ -93,7 +93,10 @@ void RenderManager::drawWithLights()
     shadowMapTex.setScale(scale, -finalSize);
     shadowMapTex.setColor(m_lights[i]->getColor());
 
-    m_window->draw(shadowMapTex, &m_shadowMapRender);
+    sf::RenderStates states;
+    states.shader = &m_shadowMapRender;
+    states.blendMode = sf::BlendAdd;
+    m_window->draw(shadowMapTex, states);
   }
   drawWithoutLights();
 }

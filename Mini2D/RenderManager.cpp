@@ -24,14 +24,13 @@ void RenderManager::setUseLights(bool useLights)
 
 void RenderManager::drawAll()
 {
+  m_drawCalls = 0;
+  m_window->clear(sf::Color(200, 200, 200, 255));
   m_useLights ? drawWithLights() : drawWithoutLights();
 }
 
 void RenderManager::drawWithoutLights()
 {
-  m_drawCalls = 0;
-  m_window->clear(sf::Color(200, 200, 200, 255));
-
   for (unsigned int i = 0; i < m_renderers.size(); ++i)
   {
     if (m_renderers[i]->isDestroyed())
@@ -49,9 +48,7 @@ void RenderManager::drawWithoutLights()
 }
 
 void RenderManager::drawWithLights()
-{
-  m_drawCalls = 0;
-  
+{  
   for (unsigned int i = 0; i < m_lights.size(); ++i)
   {
     sf::RenderTexture* occludersFBO = m_lights[i]->getOccluderFBO();

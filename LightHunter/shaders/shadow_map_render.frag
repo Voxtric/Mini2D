@@ -1,9 +1,5 @@
 #define PI 3.14
 
-//inputs from vertex shader
-varying vec2 vTexCoord0;
-varying LOWP vec4 vColor;
-
 //uniform values
 uniform sampler2D u_texture;
 uniform vec2 resolution;
@@ -17,7 +13,7 @@ float sample(vec2 coord, float r)
 void main(void)
 {
     //rectangular to polar
-    vec2 norm = vTexCoord0.st * 2.0 - 1.0;
+    vec2 norm = gl_TexCoord[0].st * 2.0 - 1.0;
     float theta = atan(norm.y, norm.x);
     float r = length(norm); 
     float coord = (theta + PI) / (2.0*PI);
@@ -52,5 +48,5 @@ void main(void)
 
     //multiply the summed amount by our distance, which gives us a radial falloff
     //then multiply by vertex (light) color  
-    gl_FragColor = vColor * vec4(vec3(1.0), sum * smoothstep(1.0, 0.0, r));
+    gl_FragColor = gl_Color * vec4(vec3(1.0), sum * smoothstep(1.0, 0.0, r));
 }

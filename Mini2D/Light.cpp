@@ -5,11 +5,17 @@ Light::Light(sf::Vector2f position, sf::Color color, unsigned int size)
   m_position = position;
   m_color = color;
   m_occluderFBO.create(size, size, false);
+  m_shadowMapFBO.create(size, 1, false);
 }
 
 sf::RenderTexture* Light::getOccluderFBO()
 {
   return &m_occluderFBO;
+}
+
+sf::RenderTexture* Light::getShadowMapFBO()
+{
+  return &m_shadowMapFBO;
 }
 
 sf::Vector2f Light::getPosition() const

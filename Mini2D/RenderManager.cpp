@@ -6,6 +6,8 @@ RenderManager::RenderManager()
 {
   m_vertexYAxisFlip.loadFromFile("shaders/vertex_y_axis_flip.vert",
     sf::Shader::Vertex);
+  m_shadowMapGen.loadFromFile("shaders/shadow_map_gen.frag",
+    sf::Shader::Fragment);
 }
 
 void RenderManager::setWindow(const sf::RenderWindow* window)
@@ -50,11 +52,11 @@ void RenderManager::drawWithLights()
   
   for (unsigned int i = 0; i < m_lights.size(); ++i)
   {
-    sf::RenderTexture* occluderFBO = m_lights[i]->getOccluderFBO();
-    occluderFBO->clear(sf::Color(0, 0, 0, 0));
-    sf::View view = occluderFBO->getView();
+    sf::RenderTexture* occludersFBO = m_lights[i]->getOccluderFBO();
+    occludersFBO->clear(sf::Color(0, 0, 0, 0));
+    sf::View view = occludersFBO->getView();
     view.setCenter(m_lights[i]->getPosition());
-    occluderFBO->setView(view);
+    occludersFBO->setView(view);
 
     for (unsigned int j = 0; j < m_occluders.size(); ++j)
     {
@@ -64,19 +66,36 @@ void RenderManager::drawWithLights()
         m_occluders.pop_back();
         --i;
       }
-      else if (m_occluders[i]->canRender(occluderFBO))
+      else if (m_occluders[i]->canRender(occludersFBO))
       {
-        m_occluders[i]->render(occluderFBO, &m_vertexYAxisFlip);
+        m_occluders[i]->render(occludersFBO, &m_vertexYAxisFlip);
         ++m_drawCalls;
       }
     }
 
+    sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
+    shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
+    float size = (float)m_lights[i]->getSize();
+    m_shadowMapGen.setParameter("resolution", sf::Vector2f(size, size));
+    sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
+    shadowMapFBO->draw(occludersTex, &m_shadowMapGen);
+
+    //Render the shadow map frame buffer
+    /*
     m_window->clear(sf::Color(200, 200, 200, 255));
-    sf::Sprite occluderMap = sf::Sprite(occluderFBO->getTexture());
-    occluderMap.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
-    occluderMap.setPosition(m_lights[i]->getPosition());
+    sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
+    m_window->draw(shadowMapTex);
+    */
+
+    //Render the occluders frame buffer
+    /*
+    m_window->clear(sf::Color(200, 200, 200, 255));
+    sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
+    occludersTex.setOrigin(m_lights[i]->getSize() / 2.0f, m_lights[i]->getSize() / 2.0f);
+    occludersTex.setPosition(m_lights[i]->getPosition());
     m_window->draw(occluderMap);
     ++m_drawCalls;
+    */
   }
 }
 

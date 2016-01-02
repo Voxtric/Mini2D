@@ -14,7 +14,11 @@ Renderer::Renderer(sf::Texture& spriteTexture)
 
 bool Renderer::canRender(const sf::RenderTarget* renderTarget) const
 {
-  return true;
+  bool canRender = false;
+  sf::View view = renderTarget->getView();
+  sf::FloatRect viewRect(view.getCenter(), view.getSize());
+  canRender = viewRect.intersects(getGlobalBounds());
+  return canRender;
 }
 
 void Renderer::render(sf::RenderTarget* window)

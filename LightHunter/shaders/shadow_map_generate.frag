@@ -34,6 +34,7 @@ void main()
         if (caster > THRESHOLD)
 		{
             distance = min(distance, dst);
+			break;
             //NOTE: we could probably use "break" or "return" here
         }
 	} 

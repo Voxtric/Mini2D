@@ -23,6 +23,7 @@
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="CollisionShape.h" />
     <ClInclude Include="Destroyable.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HitInfo.hpp" />
     <ClInclude Include="Light.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="CollisionShape.cpp" />
     <ClCompile Include="Destroyable.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="RenderManager.cpp" />

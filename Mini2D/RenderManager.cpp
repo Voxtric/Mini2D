@@ -42,6 +42,7 @@ void RenderManager::drawRenderers(sf::RenderTarget* target)
   {
     if (m_renderers[i]->isDestroyed())
     {
+      delete m_renderers[i];
       m_renderers[i] = m_renderers.back();
       m_renderers.pop_back();
       --i;
@@ -60,6 +61,7 @@ void RenderManager::drawOccluders(sf::RenderTarget* target, sf::Shader* shader)
   {
     if (m_occluders[i]->isDestroyed())
     {
+      delete m_occluders[i];
       m_occluders[i] = m_occluders.back();
       m_occluders.pop_back();
       --i;
@@ -76,38 +78,48 @@ void RenderManager::drawLights(sf::RenderTarget* target)
 {  
   for (unsigned int i = 0; i < m_lights.size(); ++i)
   {
-    //State one
-    sf::RenderTexture* occludersFBO = m_lights[i]->getOccluderFBO();
-    occludersFBO->clear(sf::Color(0, 0, 0, 0));
-    sf::View view = occludersFBO->getView();
-    view.setCenter(m_lights[i]->getPosition());
-    occludersFBO->setView(view);
-    drawOccluders(occludersFBO, &m_vertexYAxisFlip);
+    if (m_lights[i]->isDestroyed())
+    {
+      delete m_lights[i];
+      m_lights[i] = m_lights.back();
+      m_lights.pop_back();
+      --i;
+    }
+    else if (m_lights[i]->canRender(target))
+    {
+      //Stage one
+      sf::RenderTexture* occludersFBO = m_lights[i]->getOccluderFBO();
+      occludersFBO->clear(sf::Color(0, 0, 0, 0));
+      sf::View view = occludersFBO->getView();
+      view.setCenter(m_lights[i]->getPosition());
+      occludersFBO->setView(view);
+      drawOccluders(occludersFBO, &m_vertexYAxisFlip);
 
-    //Stage two
-    sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
-    shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
-    float size = (float)m_lights[i]->getResolution(); //Used in stage three too.
-    m_shadowMapGenerate.setParameter("resolution", sf::Vector2f(size, size));
-    float scale = m_lights[i]->getScale();
-    m_shadowMapGenerate.setParameter("scale", scale);
-    sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
-    shadowMapFBO->draw(occludersTex, &m_shadowMapGenerate);
+      //Stage two
+      sf::RenderTexture* shadowMapFBO = m_lights[i]->getShadowMapFBO();
+      shadowMapFBO->clear(sf::Color(0, 0, 0, 0));
+      float size = (float)m_lights[i]->getResolution(); //Used in stage three too.
+      m_shadowMapGenerate.setParameter("resolution", sf::Vector2f(size, size));
+      float scale = m_lights[i]->getScale();
+      m_shadowMapGenerate.setParameter("scale", scale);
+      sf::Sprite occludersTex = sf::Sprite(occludersFBO->getTexture());
+      shadowMapFBO->draw(occludersTex, &m_shadowMapGenerate);
 
-    //Stage three
-    m_shadowMapRender.setParameter("resolution", sf::Vector2f(size, size));
-    sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
-    float finalSize = size * scale;
-    float x = m_lights[i]->getPosition().x - (finalSize / 2.0f);
-    float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + finalSize;
-    shadowMapTex.setPosition(x, y);
-    shadowMapTex.setScale(scale, -finalSize);
-    shadowMapTex.setColor(m_lights[i]->getColor());
+      //Stage three
+      m_shadowMapRender.setParameter("resolution", sf::Vector2f(size, size));
+      sf::Sprite shadowMapTex = sf::Sprite(shadowMapFBO->getTexture());
+      float finalSize = size * scale;
+      float x = m_lights[i]->getPosition().x - (finalSize / 2.0f);
+      float y = m_lights[i]->getPosition().y - (finalSize / 2.0f) + finalSize;
+      shadowMapTex.setPosition(x, y);
+      shadowMapTex.setScale(scale, -finalSize);
+      shadowMapTex.setColor(m_lights[i]->getColor());
 
-    sf::RenderStates states;
-    states.shader = &m_shadowMapRender;
-    states.blendMode = sf::BlendAdd;
-    m_window->draw(shadowMapTex, states);
+      sf::RenderStates states;
+      states.shader = &m_shadowMapRender;
+      states.blendMode = sf::BlendAdd;
+      m_window->draw(shadowMapTex, states);
+    }
   }
 }
 

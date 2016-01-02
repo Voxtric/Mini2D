@@ -25,6 +25,17 @@ unsigned int Light::getResolution() const
   return m_occluderFBO.getSize().x; //x or y will do.
 }
 
+bool Light::canRender(const sf::RenderTarget* renderTarget) const
+{
+  bool canRender = false;
+  sf::View view = renderTarget->getView();
+  sf::Vector2f size = view.getSize();
+  sf::Vector2f position = view.getCenter() - (size / 2.0f);
+  sf::FloatRect viewRect(position, size);
+  canRender = viewRect.intersects(getGlobalBounds());
+  return canRender;
+}
+
 void Light::setPosition(sf::Vector2f position)
 {
   m_position = position;
@@ -53,4 +64,15 @@ sf::Color Light::getColor() const
 float Light::getScale() const
 {
   return m_scale;
+}
+
+sf::FloatRect Light::getGlobalBounds() const
+{
+  sf::FloatRect rect;
+  float size = (float)getResolution() * m_scale;
+  rect.top = m_position.y - (size / 2.0f);
+  rect.left = m_position.x - (size / 2.0f);
+  rect.height = size;
+  rect.width = size;
+  return rect;
 }

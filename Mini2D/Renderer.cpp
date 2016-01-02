@@ -16,7 +16,9 @@ bool Renderer::canRender(const sf::RenderTarget* renderTarget) const
 {
   bool canRender = false;
   sf::View view = renderTarget->getView();
-  sf::FloatRect viewRect(view.getCenter(), view.getSize());
+  sf::Vector2f size = view.getSize();
+  sf::Vector2f position = view.getCenter() - (size / 2.0f);
+  sf::FloatRect viewRect(position, size);
   canRender = viewRect.intersects(getGlobalBounds());
   return canRender;
 }

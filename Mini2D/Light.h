@@ -2,7 +2,9 @@
 
 #include <SFML\Graphics.hpp>
 
-class Light
+#include "Destroyable.h"
+
+class Light : public Destroyable
 {
 public:
   Light(sf::Vector2f position, sf::Color color, float scale,
@@ -11,6 +13,7 @@ public:
   sf::RenderTexture* getOccluderFBO();
   sf::RenderTexture* getShadowMapFBO();
   unsigned int getResolution() const;
+  bool canRender(const sf::RenderTarget* renderTarget) const;
 
   void setPosition(sf::Vector2f position);
   void setColor(sf::Color color);
@@ -19,6 +22,7 @@ public:
   sf::Vector2f getPosition() const;
   sf::Color getColor() const;
   float getScale() const;
+  sf::FloatRect getGlobalBounds() const;
 
 private:
   sf::RenderTexture m_occluderFBO;

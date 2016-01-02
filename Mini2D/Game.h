@@ -31,10 +31,12 @@ public:
   static Game& getActiveGame();
 
 private:
-  unsigned int m_targetTickRate = 0;
-  unsigned int m_targetFrameRate = 0;
   std::string m_ticksInLastSecond = "0";
   std::string m_framesInLastSecond = "0";
+  std::string m_drawCallsInLastFrame = "0";
+
+  unsigned int m_targetTickRate = 0;
+  unsigned int m_targetFrameRate = 0;
   std::vector<Ticker*> m_tickers;
 
   sf::RenderWindow* m_window = nullptr;

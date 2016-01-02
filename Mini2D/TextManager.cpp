@@ -6,7 +6,7 @@ TextManager::~TextManager()
 {
   for (auto& iterator : m_fonts)
   {
-  delete iterator.second;
+    delete iterator.second;
   }
 }
 
@@ -44,16 +44,16 @@ sf::Font* TextManager::getFont(const std::string& fontPath)
   auto iterator = m_fonts.find(fontPath);
   if (iterator != m_fonts.end())
   {
-  font = iterator->second;
+    font = iterator->second;
   }
   else
   {
-  font = new sf::Font();
-  if (font->loadFromFile(fontPath))
-  {
-  m_fonts.emplace(fontPath, font);
-  std::cout << "Loaded and cached " << fontPath << ".\n";
-  }
+    font = new sf::Font();
+    if (font->loadFromFile(fontPath))
+    {
+      m_fonts.emplace(fontPath, font);
+      std::cout << "Loaded and cached " << fontPath << ".\n";
+    }
   }
   return font;
 }
@@ -62,9 +62,9 @@ void TextManager::checkStrings()
 {
   for (auto& iterator : m_textDrawables)
   {
-  if (*iterator.first != iterator.second.getString())
-  {
-  iterator.second.setString(*iterator.first);
-  }
+    if (*iterator.first != iterator.second.getString())
+    {
+      iterator.second.setString(*iterator.first);
+    }
   }
 }

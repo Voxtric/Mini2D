@@ -15,7 +15,7 @@ public:
 
   void setWindow(const sf::RenderWindow* window);
   void setUseLights(bool useLights);
-  void drawAll();
+  unsigned int drawAll();
   void addRenderer(const Renderer* renderer);
   void addOccluder(const Renderer* occluder);
   void addLight(const Light* light);

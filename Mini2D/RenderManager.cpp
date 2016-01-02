@@ -1,6 +1,7 @@
 #include "RenderManager.h"
 
 #include "Renderer.h"
+#include "Game.h"
 
 RenderManager::RenderManager()
 {
@@ -23,7 +24,7 @@ void RenderManager::setUseLights(bool useLights)
   m_useLights = useLights;
 }
 
-void RenderManager::drawAll()
+unsigned int RenderManager::drawAll()
 {
   m_drawCalls = 0;
   m_window->clear(sf::Color(0, 0, 0, 255));
@@ -34,6 +35,7 @@ void RenderManager::drawAll()
     drawLights(m_window);
     drawOccluders(m_window, &m_blackOut);
   }
+  return m_drawCalls;
 }
 
 void RenderManager::drawRenderers(sf::RenderTarget* target)
@@ -119,6 +121,7 @@ void RenderManager::drawLights(sf::RenderTarget* target)
       states.shader = &m_shadowMapRender;
       states.blendMode = sf::BlendAdd;
       m_window->draw(shadowMapTex, states);
+      ++m_drawCalls;
     }
   }
 }

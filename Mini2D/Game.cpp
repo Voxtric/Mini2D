@@ -18,6 +18,8 @@ Game::Game(unsigned int frameRate, unsigned int tickRate, bool useLights)
     sf::Vector2f(0.0f, 0.0f));
   m_textManager.addTextToDisplay(&m_framesInLastSecond, 
     sf::Vector2f(0.0f, 16.0f));
+  m_textManager.addTextToDisplay(&m_drawCallsInLastFrame,
+    sf::Vector2f(0.0f, 32.0f));
 }
 
 Game::~Game()
@@ -136,7 +138,10 @@ InputManager& Game::getInputManager()
 
 void Game::drawAll()
 {
-  m_renderManager.drawAll();
+  unsigned int drawCalls = m_renderManager.drawAll();
+  std::stringstream drawCallStream;
+  drawCallStream << "Draw Calls: " << drawCalls;
+  m_drawCallsInLastFrame = drawCallStream.str();
   m_textManager.drawText(m_window);
   m_window->display();
 }

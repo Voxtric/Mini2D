@@ -38,9 +38,14 @@ int main()
   Game* game = new Game(120, 60, true);
   game->openWindow("Light Hunter", 1080, 760);
 
-  Renderer* renderer = new Renderer("sprites/ship.png");
-  RENDER.addOccluder(renderer);
-  RENDER.addRenderer(renderer);
+  for (unsigned int i = 0; i < 15; ++i)
+  {
+    Renderer* renderer = new Renderer("sprites/ship.png");
+    RENDER.addOccluder(renderer);
+    RENDER.addRenderer(renderer);
+    renderer->setPosition(rand() % 1080, rand() % 770);
+    renderer->setRotation(rand() % 360);
+  }
   Test test;
 
   game->mainLoop();
